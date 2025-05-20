@@ -172,3 +172,39 @@ getAllActresses().then((actresses) => {
   });
 
 });
+
+
+// MILESTONE 5
+
+// Riceve un array di id (numeri) e per ognuno chiama getActress(id).
+// Usa Promise.all per eseguire tutte le chiamate in parallelo.
+// Restituisce un array di Actress | null (null se attrice non trovata).
+async function getActresses(ids: number[]): Promise<(Actress | null)[]> {
+
+  // Mappa ogni id in una Promise che richiama getActress
+  const promises = ids.map((id) => getActress(id));
+
+  // Attende che tutte le Promise siano risolte in parallelo
+  const results = await Promise.all(promises);
+
+  // Restituisce l'array dei risultati (Actress o null)
+  return results;
+
+}
+
+// Esempio di utilizzo di getActresses
+// Chiama la funzione getActresses passando un array di id da cercare
+getActresses([1, 2, 3, 999]).then((results) => {
+
+  // Cicla su ogni risultato con forEach, ricevendo l'elemento (actress) e l'indice (index)
+  results.forEach((actress, index) => {
+
+    if (actress) {
+      // Stampa un messaggio di successo con il nome dell'attrice
+      console.log(`✔ Attrice con id ${index + 1} trovata: ${actress.name}`);
+    } else {
+      // Stampa un messaggio di errore indicandolo
+      console.log(`❌ Attrice con id ${index + 1} non trovata.`);
+    }
+  });
+});
